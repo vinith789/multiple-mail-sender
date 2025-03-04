@@ -14,21 +14,27 @@ const transporter = nodemailer.createTransport({
         pass: process.env.EMAIL_PASS
     },
     tls: {
-        rejectUnauthorized: false 
+        rejectUnauthorized: false
     }
 });
 
 app.post("/send-email", async (req, res) => {
-    const { emails, subject, message } = req.body;
+    const { emailsData, subject, message } = req.body;
 
     try {
-        for (const email of emails) {
+        for (const { email, roles } of emailsData) {
+            let personalizedMessage = message;
+            roles.forEach((role, index) => {
+                personalizedMessage = personalizedMessage.replace(new RegExp(`{role${index + 1}}`, 'g'), role);
+            });
+
             let info = await transporter.sendMail({
                 from: `"Vinith" <${process.env.EMAIL_USER}>`,
                 to: email,
                 subject: subject,
-                text: message
+                text: personalizedMessage
             });
+
             console.log(`✅ Email sent to ${email}: ${info.response}`);
         }
         res.json({ message: "Emails sent successfully!" });

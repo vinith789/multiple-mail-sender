@@ -1,68 +1,112 @@
 body {
-  font-family: 'Arial', sans-serif;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-  text-align: center;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #1b5e20, #2c5364);
+    color: white;
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 .container {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  width: 400px;
-  text-align: center;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #2e7d32;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    animation: slideIn 0.7s ease-in-out;
+    transition: transform 0.3s ease-in-out;
 }
 
-h2 {
-  margin-bottom: 15px;
+.container:hover {
+    transform: scale(1.02);
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.email-card {
+    background: linear-gradient(120deg, #004d40, #26a69a);
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 12px;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 input, textarea, button {
-  width: 90%;
-  padding: 10px;
-  margin: 8px 0;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  outline: none;
+    width: 90%;
+    padding: 12px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: 0.3s;
 }
 
-textarea {
-  height: 100px;
-  resize: none;
+input, textarea {
+    background: #fff3e0;
+    color: #1b5e20;
+    outline: none;
+}
+
+input:focus, textarea:focus {
+    box-shadow: 0 0 10px #ffcc29;
 }
 
 button {
-  background: #ff7eb3;
-  cursor: pointer;
-  transition: 0.3s ease;
+    background: linear-gradient(120deg, #ffcc29, #ffb300);
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: 0.3s ease-in-out;
+    border-radius: 50px;
 }
 
 button:hover {
-  background: #ff4f91;
+    background: linear-gradient(120deg, #ffb300, #ff6f00);
+    transform: scale(1.05);
+    color: white;
 }
 
-.toast {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 12px 20px;
-  border-radius: 5px;
-  opacity: 1;
-  transition: opacity 0.5s ease-in-out;
-  font-size: 16px;
+.message-preview {
+    background: #bbdefb;
+    color: #0d47a1;
+    padding: 12px;
+    border-radius: 10px;
+    margin-top: 15px;
+    text-align: left;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.toast.success { background: #4caf50; }
-.toast.error { background: #e74c3c; }
+.status-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px;
+    border-radius: 10px;
+    display: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    font-weight: bold;
+}
+
+.loading {
+    background: #ffcc29;
+    color: black;
+}
+
+.success {
+    background: #4caf50;
+    color: white;
+}
+
+.error {
+    background: #d32f2f;
+    color: white;
+}

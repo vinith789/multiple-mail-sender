@@ -3,24 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi Email Sender</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Send Dynamic Emails</title>
+    <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-    <div class="container">
-        <h2>Multi Email Sender 📧</h2>
 
-        <label for="numEmails">Enter Number of Emails:</label>
-        <input type="number" id="numEmails" min="1" max="10" placeholder="How many mail need to send" required>
-        <button onclick="generateFields()">Generate</button>
+<div class="container">
+    <h2>Send Dynamic Emails</h2>
+    <button onclick="addEmail()">+ Add Email</button>
 
-        <form id="emailForm" style="display: none;">
-            <div id="emailFields"></div>
-            <input type="text" id="subject" placeholder="Enter Subject" required>
-            <textarea id="message" placeholder="Enter Message" required></textarea>
-            <button type="submit">Send Emails</button>
-        </form>
-    </div>
-    <script src="script.js"></script>
+    <div id="email-container"></div>
+
+    <h3>Compose Email</h3>
+    <input type="text" id="subject" autocomplete="off" placeholder="Enter Subject">
+    <textarea id="message" placeholder="Type message using {role1}, {role2}, etc." oninput="updatePreview()"></textarea>
+
+    <button onclick="sendEmails()">Send Emails</button>
+
+</div>
+<div id="status" class="status-message"></div>
+
+<script src="./script.js"></script>
+
 </body>
 </html>
