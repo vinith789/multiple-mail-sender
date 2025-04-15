@@ -1,29 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Send Dynamic Emails</title>
-    <link rel="stylesheet" href="./styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Send Dynamic Emails</title>
+  <link rel="stylesheet" href="./styles.css"/>
 </head>
 <body>
 
 <div class="container">
+
+  <!-- STEP 1: Sender Login -->
+  <div id="login-section">
+    <h2>Login to Send Emails</h2>
+    <input type="email" id="senderEmail" placeholder="Your Email" required />
+    <input type="password" id="senderPassword" placeholder="Your Password" required />
+    <button onclick="proceedToEmailForm()">Proceed</button>
+  </div>
+
+  <!-- STEP 2: Email Form (hidden by default) -->
+  <div id="email-form-section" style="display: none;">
     <h2>Send Dynamic Emails</h2>
     <button onclick="addEmail()">+ Add Email</button>
-
     <div id="email-container"></div>
 
     <h3>Compose Email</h3>
-    <input type="text" id="subject" autocomplete="off" placeholder="Enter Subject">
+    <input type="text" id="subject" autocomplete="off" placeholder="Enter Subject" />
     <textarea id="message" placeholder="Type message using {role1}, {role2}, etc." oninput="updatePreview()"></textarea>
-
     <button onclick="sendEmails()">Send Emails</button>
+  </div>
 
 </div>
+
 <div id="status" class="status-message"></div>
-
 <script src="./script.js"></script>
-
 </body>
 </html>
