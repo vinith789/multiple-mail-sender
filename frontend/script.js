@@ -53,21 +53,27 @@ function addRole(emailId) {
 }
 
 function updatePreview() {
-    const emailCards = document.querySelectorAll(".email-card");
     const messageTemplate = document.getElementById("message").value;
+    const emailCards = document.querySelectorAll(".email-card");
 
     emailCards.forEach(card => {
-        const roles = Array.from(card.querySelectorAll(".role-input"))
-                           .map((input, index) => ({ key: `{role${index + 1}}`, value: input.value.trim() }))
-                           .filter(role => role.value);
-
         let finalMessage = messageTemplate;
-        roles.forEach(role => {
-            finalMessage = finalMessage.replace(new RegExp(role.key, 'g'), role.value);
+
+        const roleInputs = card.querySelectorAll(".role-input");
+        roleInputs.forEach((roleInput, index) => {
+            const roleNumber = index + 1;
+            const rolePlaceholder = `{role${roleNumber}}`;
+
+            if (finalMessage.includes(rolePlaceholder)) {
+                finalMessage = finalMessage.replaceAll(rolePlaceholder, roleInput.value || "");
+            }
         });
 
+        // 🔥 Very important: Remove any unused {roleX}
+        finalMessage = finalMessage.replace(/{role\d+}/g, "");
+
         const previewDiv = card.querySelector(".message-preview");
-        previewDiv.innerHTML = `<p>${finalMessage}</p>`;
+        previewDiv.innerHTML = `<strong>Preview:</strong> <br> ${finalMessage}`;
     });
 }
 
@@ -138,3 +144,78 @@ function resetForm() {
         document.getElementById("status").style.display = "none";
     }, 3000);
 }
+
+function handleFileUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const ext = file.name.split('.').pop().toLowerCase();
+    const reader = new FileReader();
+
+    if (['txt', 'csv', 'json'].includes(ext)) {
+        reader.onload = function (e) {
+            const content = e.target.result;
+
+            if (ext === 'json') {
+                const data = JSON.parse(content);
+                data.forEach(d => createEmailCard([d.email, ...(d.roles || [])]));
+            } else {
+                const lines = content.trim().split(/\r?\n/);
+                lines.forEach(line => {
+                    const values = line.split(',').map(v => v.trim());
+                    createEmailCard(values);
+                });
+            }
+        };
+        reader.readAsText(file);
+
+    } else if (ext === 'xlsx') {
+        reader.onload = function (e) {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const sheet = workbook.Sheets[workbook.SheetNames[0]];
+            const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+            rows.forEach(row => {
+                if (row.length > 0) {
+                    const email = row[0];
+                    const roles = row.slice(1).filter(r => r); // skip empty
+                    createEmailCard([email, ...roles]);
+                }
+            });
+        };
+        reader.readAsArrayBuffer(file);
+    } else {
+        alert("Unsupported file type");
+    }
+}
+
+document.getElementById("fileInput").addEventListener("change", handleFileUpload);
+
+function createEmailCard(values) {
+    console.log("Email:", values[0]);
+    console.log("Roles:", values.slice(1));
+
+    emailCount++;
+    const emailContainer = document.getElementById("email-container");
+
+    const emailCard = document.createElement("div");
+    emailCard.className = "email-card";
+    emailCard.id = `email-card-${emailCount}`;
+
+    let rolesHTML = '';
+    values.slice(1).forEach((roleValue, roleIndex) => {
+        rolesHTML += `<input type="text" class="role-input" value="${roleValue}" placeholder="Role ${roleIndex + 1}" data-role-number="${roleIndex + 1}" oninput="updatePreview()">`;
+    });
+
+    emailCard.innerHTML = `
+        <h3>Email ${emailCount}</h3>
+        <input type="email" class="email-input" value="${values[0]}" placeholder="Enter Email">
+        <button onclick="addRole(${emailCount})">+ Add Role</button>
+        <div class="roles-container">${rolesHTML}</div>
+        <div class="message-preview"></div>
+    `;
+
+    emailContainer.appendChild(emailCard);
+}
+

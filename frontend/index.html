@@ -19,20 +19,31 @@
   </div>
 
   <!-- STEP 2: Email Form (hidden by default) -->
-  <div id="email-form-section" style="display: none;">
-    <h2>Send Dynamic Emails</h2>
-    <button onclick="addEmail()">+ Add Email</button>
-    <div id="email-container"></div>
+  <!-- STEP 2: Email Form (updated) -->
+<div id="email-form-section" style="display: none;">
+  <h2>Send Dynamic Emails</h2>
 
-    <h3>Compose Email</h3>
-    <input type="text" id="subject" autocomplete="off" placeholder="Enter Subject" />
-    <textarea id="message" placeholder="Type message using {role1}, {role2}, etc." oninput="updatePreview()"></textarea>
-    <button onclick="sendEmails()">Send Emails</button>
-  </div>
+  <button onclick="addEmail()">+ Add Email</button>
+
+  <!-- 👇 New CSV Upload Button -->
+  <input type="file" id="fileInput" />
+
+  <div id="email-container"></div>
+
+  <h3>Compose Email</h3>
+  <input type="text" id="subject" autocomplete="off" placeholder="Enter Subject" />
+  <textarea id="message" placeholder="Type message using {role1}, {role2}, etc." oninput="updatePreview()"></textarea>
+  <button onclick="sendEmails()">Send Emails</button>
+</div>
+
 
 </div>
 
 <div id="status" class="status-message"></div>
 <script src="./script.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+
+
 </body>
 </html>
